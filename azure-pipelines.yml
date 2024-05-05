@@ -29,30 +29,10 @@ jobs:
       command: test
       projects: '**/*Tests/*.csproj'
       publishTestResults: true
-      arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-
-#  - task: PublishCodeCoverageResults@1
-#    displayName: 'Publish code coverage results'
-#    condition: succeededOrFailed()
-#    inputs:
-#      codeCoverageTool: 'Cobertura'
-#      summaryFileLocation: '**/*coverage.cobertura.xml'
-
-#  - task: DotNetCoreCLI@2
-#    displayName: 'dotnet test'
-#    inputs:
-#      command: 'test'
-#      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
-#      publishTestResults: true
-#      projects: '**/*Tests/*.csproj'
-
-#  - task: PublishCodeCoverageResults@2
-#    displayName: 'Publish code coverage report'
-#    inputs:
-#      summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
 
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish code coverage report'
     inputs:
-      summaryFileLocation: '**/*coverage.cobertura.xml'
+      summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
 
