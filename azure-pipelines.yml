@@ -24,12 +24,27 @@ jobs:
       projects: 'Products.Api.sln'
 
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet test'
+    displayName: Test
     inputs:
-      command: 'test'
-      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+      command: test
+      projects: '**/*Test.csproj'
       publishTestResults: true
-      projects: '**/*Tests/*.csproj'
+      arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+
+#  - task: PublishCodeCoverageResults@1
+#    displayName: 'Publish code coverage results'
+#    condition: succeededOrFailed()
+#    inputs:
+#      codeCoverageTool: 'Cobertura'
+#      summaryFileLocation: '**/*coverage.cobertura.xml'
+
+#  - task: DotNetCoreCLI@2
+#    displayName: 'dotnet test'
+#    inputs:
+#      command: 'test'
+#      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+#      publishTestResults: true
+#      projects: '**/*Tests/*.csproj'
 
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish code coverage report'
