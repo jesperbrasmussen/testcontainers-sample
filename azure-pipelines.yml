@@ -23,4 +23,18 @@ jobs:
       configuration: $(buildConfiguration)
       projects: 'Products.Api.sln'
 
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
+    inputs:
+      command: 'test'
+      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+      publishTestResults: true
+      projects: '**/*Tests/*.csproj'
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage report'
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
 
